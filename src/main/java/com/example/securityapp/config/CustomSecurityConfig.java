@@ -10,10 +10,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.example.securityapp.security.filter.JWTCheckFilter;
 import com.example.securityapp.security.handler.ApiLoginFailurApiSuccessHandler;
 import com.example.securityapp.security.handler.ApiLoginSuccessHandler;
 
@@ -61,6 +63,8 @@ public class CustomSecurityConfig {
             config.failureHandler(new ApiLoginFailurApiSuccessHandler());
 
         });
+
+        http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
